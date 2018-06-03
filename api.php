@@ -16,15 +16,22 @@ require "vendors/Rabbit.php";
 if(!isset($_GET['p']) || intval($_GET['p'])<1) $_GET['p']=rand(2,5);
 $prg =intval($_GET['p']);
 
-if(!isset($_GET['mins']) || intval($_GET['mins'])<2) $_GET['mins']=2;
-$min_sentence  =intval($_GET['mins']);
+if(!isset($_GET['min']) || intval($_GET['min'])<2) $_GET['min']=2;
+$min_sentence  =intval($_GET['min']);
 
-if(!isset($_GET['maxs']) || intval($_GET['maxs'])<2) $_GET['maxs']=2;
-$max_sentence  =intval($_GET['maxs']);
+if(!isset($_GET['max']) || intval($_GET['max'])<2) $_GET['max']=2;
+$max_sentence  =intval($_GET['max']);
 
-if(!isset($_GET['enc'])) $encoding = "zg"; else $encoding = $_GET['enc'];
+if(!isset($_GET['enc']))
+{
+    $encoding = "zg";
+} else {
+    $encoding = $_GET['enc'];
+}
 
-if(!isset($_GET['enc'])) $encoding = "zg"; else $encoding = $_GET['enc'];
+if($encoding == "zg") $font = "Zawgyi-one, Zawgyi1"; else $font = 'Myanmar3, "Myanmar Text" , Myanmar2';
+
+if(!isset($_GET['html'])) $html = "html"; else $html = strtolower($_GET['html']);
 
 
 /*
@@ -51,7 +58,16 @@ for($i=0;$i<$prg;$i++){
     for($j=0;$j<$st_count;$j++){
         $paragraph .= makeSentence()." ";
     }
-    $output .= "<p>".$paragraph."</p>\n";
+
+    if($html=="html")
+    {
+        $output .= "<p style='font-family: ".$font."'>".$paragraph."</p>\n";
+    }
+    else
+    {
+        $output .= $paragraph."\r\n\r\n";
+    }
+
 }
 
 if($encoding=="zg") $output = Rabbit::uni2zg($output);
