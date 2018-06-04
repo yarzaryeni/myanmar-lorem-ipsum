@@ -4,11 +4,13 @@
  * Date: 1/6/2018
  * Time: 11:54 PM
  */
+require "config.php";
 
-define("CONTEXT", "./sport/");
+if(!isset($_GET['context'])) $context = $conf["default_context"]; else $context = trim(strtolower($_GET['context']));
+
+define("CONTEXT", "./".$context."/");
 require "functions.php";
-require "vendors/Rabbit.php";
-
+require "vendors/Rabbit/Rabbit.php";
 
 /*
  * Set default values if not set.
@@ -30,8 +32,8 @@ if(!isset($_GET['enc']))
 }
 
 if($encoding == "zg") $font = "Zawgyi-one, Zawgyi1"; else $font = 'Myanmar3, "Myanmar Text" , Myanmar2';
-
 if(!isset($_GET['html'])) $html = "html"; else $html = strtolower($_GET['html']);
+
 
 
 /*
@@ -72,6 +74,6 @@ for($i=0;$i<$prg;$i++){
 
 if($encoding=="zg") $output = Rabbit::uni2zg($output);
 
-echo $output;
+echo trim($output);
 
 ?>
