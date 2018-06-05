@@ -110,7 +110,6 @@ function httpGet(theUrl)
         <tr>
             <td rowspan="6">
                 <textarea id="dummyText" rows="14" onclick="javascript: this.select()">
-                <?php echo trim(file_get_contents($url."plain"));?>
                 </textarea>
             </td>
             <td width="100" align="right"><label for="paragraph" class="text-left">Paragraph</label></td>

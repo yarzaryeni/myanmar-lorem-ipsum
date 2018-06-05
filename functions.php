@@ -50,6 +50,18 @@ function match2Word($match){
         }
         $result = $n*1;
     }
+    elseif(strpos($match,"rand"))
+    {
+        $nums = explode("rand", strtolower($match));
+        if(intval($nums[0]) < intval($nums[1]))
+        {
+            $result = rand(intval($nums[0]), intval($nums[1]));
+        }
+        else
+        {
+            $result = rand(intval($nums[1]), intval($nums[0]));
+        }
+    }
     elseif(strpos($match,"|"))
     {
         $matchs = explode("|",$match);
