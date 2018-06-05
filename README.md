@@ -1,6 +1,4 @@
-========================================
-Myanmar Lorem Ipsum Dummy Text Generator
-========================================
+=Myanmar Lorem Ipsum Dummy Text Generator=
 
 ==API==
 
