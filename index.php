@@ -12,7 +12,8 @@ $base_url = $conf["base_url"];
 $folder = $conf["folder"];
 
 $uri = $_SERVER['REQUEST_URI'];
-$uri = str_replace($folder."/","", $uri);
+$uri = str_replace_first($folder."/","", $uri);
+//die($uri );
 $segs = explode("/", $uri);
 
 if(strtolower($segs[0]) == "api")
@@ -59,6 +60,12 @@ else
     include "ui.php";
 }
 
+function str_replace_first($from, $to, $content)
+{
+    $from = '/'.preg_quote($from, '/').'/';
+
+    return preg_replace($from, $to, $content, 1);
+}
 
 ?>
 

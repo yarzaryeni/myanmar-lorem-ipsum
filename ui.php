@@ -110,6 +110,7 @@ function httpGet(theUrl)
         <tr>
             <td rowspan="6">
                 <textarea id="dummyText" rows="14" onclick="javascript: this.select()">
+                
                 </textarea>
             </td>
             <td width="100" align="right"><label for="paragraph" class="text-left">Paragraph</label></td>
@@ -146,7 +147,7 @@ function httpGet(theUrl)
     <h2>API</h2>
     <h3>Format:</h3>
     <p>
-        <?php echo $url ?> para(1-30) / min(1-29) / max(1-30) / (html|plain) / (zg/uni)
+        <?php echo $url ?> para(1-30) / min(1-29) / max(1-30) / (html|plain) / (zg|uni)
     </p>
     <h3>Example</h3>
     <p>
