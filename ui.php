@@ -161,7 +161,7 @@ function httpGet(theUrl)
     </p>
 </main>
 <footer>
-    Copy R
+    Found an issue? Please report <a href="https://github.com/yarzaryeni/myanmar-lorem-ipsum/issues/new" target="_blank">HERE</a> .
 </footer>
 </div>
 <script type="text/javascript">
