@@ -160,6 +160,9 @@ function httpGet(theUrl)
     <a href="<?php echo $url; ?>min2/para4/max6/uni/html" target="_blank"><?php echo $url; ?>min2/para4/max6/uni/html</a>
     </p>
 </main>
+<footer>
+    Copy R
+</footer>
 </div>
 <script type="text/javascript">
     newText();
