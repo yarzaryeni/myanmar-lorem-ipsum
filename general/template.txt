@@ -1,0 +1,1 @@
+{time_3} {adj_2} {sub} {obj} {adv_2} {verb}{end}

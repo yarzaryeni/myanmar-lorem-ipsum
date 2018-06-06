@@ -2,17 +2,6 @@
 
 
 /**
- * @param $str
- * @return mixed
- */
-function getMatch($str){
-    $vars = array();
-    preg_match_all ("/{[a-zA-Z0-9\-]+}/", $str, $vars, PREG_PATTERN_ORDER  );
-    return $vars[0];
-}
-
-
-/**
  * @param $num
  * @return mixed
  */
@@ -41,39 +30,78 @@ function match2Word($match){
     $match = trim(strtolower($match));
     $match = str_replace("{","", $match);
     $match = str_replace("}","", $match);
-    if($match=="int1" || $match=="int2" || $match=="int3" || $match=="int4")
+    $result = "";
+    $do = true;
+    $fix="";
+
+    $fix_file = $match."-fix.txt";
+
+    //echo "$match ,";
+
+    if(strpos($match,"_"))
     {
-        $c = str_replace("int","", $match);
-        $n = '';
-        for($i=0;$i<($c*1);$i++){
-            $n .= rand(1,9);
+        $part = explode("_",$match);
+        $chance = intval($part[1]);
+        if(rand(0,$chance)!=$chance){
+            $do = false;
         }
-        $result = $n*1;
+        $match = $part[0];
+        $fix_file = trim($part[0])."-fix.txt";
     }
-    elseif(strpos($match,"rand"))
-    {
-        $nums = explode("rand", strtolower($match));
-        if(intval($nums[0]) < intval($nums[1]))
+
+
+    if($do){
+        if($match=="int1" || $match=="int2" || $match=="int3" || $match=="int4")
         {
-            $result = rand(intval($nums[0]), intval($nums[1]));
+            $c = str_replace("int","", $match);
+            $n = '';
+            for($i=0;$i<($c*1);$i++){
+                $n .= rand(1,9);
+            }
+            $result = $n*1;
+        }
+        elseif(strpos($match,"rand"))
+        {
+            $nums = explode("rand", strtolower($match));
+            if(intval($nums[0]) < intval($nums[1]))
+            {
+                $result = rand(intval($nums[0]), intval($nums[1]));
+            }
+            else
+            {
+                $result = rand(intval($nums[1]), intval($nums[0]));
+            }
         }
         else
         {
-            $result = rand(intval($nums[1]), intval($nums[0]));
+            $matches = file_to_array(CONTEXT . $match . ".txt");
+            $result = randElement($matches);
+        }
+
+        if(is_file(CONTEXT.$fix_file))
+        {
+            $fix_ary =  file_to_array(CONTEXT.$fix_file);
+            $fix = randElement($fix_ary);
         }
     }
-    elseif(strpos($match,"|"))
-    {
-        $matchs = explode("|",$match);
-        $result = $matchs[rand(0,count($matchs)-1)];
-    }
-    else
-    {
-        $matches = file_to_array(CONTEXT . $match . ".txt");
-        $result = randElement($matches);
-    }
 
-    return engToMMNum($result);
+    $result = word2Meaning($result);
+    return engToMMNum($result).$fix;
+}
+
+
+function word2Meaning($word)
+{
+    $result  = $word;
+    $word = trim(strtolower($word));
+    if($word=="female_name" || $word=="male_name"){
+        $result = composeName($word);
+    }
+    elseif ($word=='time')
+    {
+        $result =date("H"). ' နာရီ '.date("i"). ' မိနစ် ';
+    }
+    return $result;
 }
 
 
@@ -82,10 +110,10 @@ function match2Word($match){
  */
 function makeSentence()
 {
-    $template = "template1.txt";
+    $template = "template.txt";
     $templates = file_to_array(CONTEXT.$template);
-    $line = randElement($templates);
-    $segments = explode("|",preg_replace("/{[a-zA-Z0-9\-]+}/","|", $line));
+    $line = trim(randElement($templates));
+    $segments = explode("|",preg_replace(MATCH_PATTERN,"|", $line));
     $matches = getMatch($line);
     $sentence = "";
     for($i=0;$i<count($matches);$i++)
@@ -93,7 +121,18 @@ function makeSentence()
         $sentence .= $segments[$i].match2Word($matches[$i]);
     }
     $sentence .= array_pop($segments);
-    return $sentence;
+    return trim($sentence);
+}
+
+
+/**
+ * @param $str
+ * @return mixed
+ */
+function getMatch($str){
+    $vars = array();
+    preg_match_all (MATCH_PATTERN, $str, $vars, PREG_PATTERN_ORDER  );
+    return $vars[0];
 }
 
 
@@ -103,6 +142,7 @@ function makeSentence()
  */
 function notComment($line)
 {
+    $line = preg_replace("/[\r]+/","\n", $line);
     if(preg_match('/(#).+/', trim($line)) || trim($line)=="")
     {
         return false;
@@ -149,4 +189,34 @@ function randElement($ary)
     $ary_len = count($ary);
     $rdm = rand(0,($ary_len-1));
     return trim($ary[$rdm]);
+}
+
+
+function composeName($gender='x')
+{
+    if(strtolower($gender)!="m" && strtolower($gender)!="f" ){
+        if(rand(0,1)==1){$gender='m';}else{$gender='f';}
+    }
+    $count = rand(2,4);
+    $name = "";
+    for($i=0;$i<$count;$i++){
+        $name .= getName($gender);
+    }
+
+    $mr = array("ဦီး", "ကို", "မောင်","ဆရာ", "ဆရာကြီး", "ဒေါက်တာ");
+    $mrs = array("ဒေါ်", "မ","မ","ဆရာမ", "ဆရာမကြီး", "ဒေါက်တာ");
+    if($gender=="m") $title = randElement($mr); else $title = randElement($mrs);
+    return $title.$name;
+}
+
+
+
+function getName($name='m')
+{
+    if($name=='f'){
+        $nameAry =  file_to_array('data/_female.txt');
+    }else{
+        $nameAry =  file_to_array('data/_male.txt');
+    }
+    return randElement($nameAry);
 }

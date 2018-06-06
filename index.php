@@ -8,7 +8,12 @@ define("BR","<br>");
 define("HR","<hr>");
 require "config.php";
 
-$base_url = $conf["base_url"];
+if($_SERVER['HTTP_HOST'] != preg_replace("/(http:)[\/]+/","",BASE_URL))
+{
+	die('<meta http-equiv="refresh" content="0;URL='.BASE_URL.'" />');
+}
+
+$base_url = BASE_URL;
 $folder = $conf["folder"];
 
 $uri = $_SERVER['REQUEST_URI'];
@@ -19,6 +24,7 @@ $segs = explode("/", $uri);
 if(strtolower($segs[0]) == "api")
 {
     $html = "html";
+    $ctx = "sport";
     foreach ($segs as $seg)
     {
         $seg = trim(strtolower($seg));
@@ -46,14 +52,22 @@ if(strtolower($segs[0]) == "api")
         {
             $html = "plain";
         }
+
+        for($i=0; $i < count($context); $i++){
+            if($seg==$context[$i]){
+                $ctx = $seg;
+            }
+        }
     }
+
+
 
     if(!isset($paragraph)) $paragraph = 4;
     if(!isset($minimum)) $minimum = 2;
     if(!isset($maximum)) $maximum = 6;
     if(!isset($encoding)) $encoding = 'zg';
 
-    echo file_get_contents($base_url.$folder."/api.php?p=".$paragraph."&min=".$minimum."&max=".$maximum."&enc=".$encoding."&html=".$html);
+    echo file_get_contents($base_url.$folder."/api.php?p=$paragraph&min=$minimum&max=$maximum&enc=$encoding&html=$html&context=$ctx");
 }
 else
 {

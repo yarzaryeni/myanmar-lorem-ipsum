@@ -2,7 +2,7 @@
 
 require "config.php";
 
-$url = $conf["base_url"].$conf["folder"]."/api/";
+$url = BASE_URL.$conf["folder"]."/api/";
 
 ?>
 
@@ -14,7 +14,7 @@ $url = $conf["base_url"].$conf["folder"]."/api/";
     <meta name="description" content="Myanmar Lorem Ipsum dummy text generator. This can generate dummy text in Burmese language. Both Unicode and Zawgyi are supported. "/>
     <meta property="og:type" content="website" />
     <meta property="og:title" content="<?php echo $conf["title"]; ?>" />
-    <meta property="og:url" content="<?php echo $conf["base_url"]; ?>/" />
+    <meta property="og:url" content="<?php echo BASE_URL; ?>/" />
     <meta property="og:site_name" content="Myanmar Lorem Ipsum Dummy Text Generator" />
     <title><?php echo $conf["title"]; ?></title>
     <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
@@ -66,12 +66,13 @@ td {
 
 function newText()
 {
+    var context   = document.getElementById("context").value;
     var paragraph   = document.getElementById("paragraph").value;
     var minLines    = document.getElementById("minLines").value;
     var maxLines    = document.getElementById("maxLines").value;
     var encoding    = document.getElementById("encoding").value;
     var htmlCode    = document.getElementById("htmlCode").value;
-    var url         = "<?php echo $conf["base_url"].$conf["folder"] ?>/api/para"+paragraph+"/min"+minLines+"/max"+maxLines+"/"+encoding+"/"+htmlCode;
+    var url         = "<?php echo BASE_URL.$conf["folder"] ?>/api/para"+paragraph+"/min"+minLines+"/max"+maxLines+"/"+encoding+"/"+htmlCode+"/"+context;
 
     var text =  httpGet(url);
     document.getElementById("dummyText").value = text.trim();
@@ -108,11 +109,29 @@ function httpGet(theUrl)
 
     <table width="100%" border="0">
         <tr>
-            <td rowspan="6">
+            <td rowspan="7">
                 <textarea id="dummyText" rows="14" onclick="javascript: this.select()">
                 
                 </textarea>
             </td>
+            <td width="100" align="right"><label for="context" class="text-left">Context</label></td>
+            <td width="100" >
+                <select id="context" class="input-sm">
+                    <?php
+                    $selected = "selected";
+                    foreach ($context as $ctx)
+                    {
+                        echo '<option value="'.strtolower($ctx).'" '.$selected.' >'.strtoupper($ctx).'</option>';
+                        $selected = '';
+                    }
+
+                    ?>
+                    ?>
+
+                </select>
+            </td>
+        </tr>
+        <tr>
             <td width="100" align="right"><label for="paragraph" class="text-left">Paragraph</label></td>
             <td width="100" ><input id="paragraph" type="number" class="input-sm" value="4" /></td>
         </tr>
@@ -147,17 +166,17 @@ function httpGet(theUrl)
     <h2>API</h2>
     <h3>Format:</h3>
     <p>
-        <?php echo $url ?> para(1-30) / min(1-29) / max(1-30) / (html|plain) / (zg|uni)
+        <?php echo $url ?> para(1-30) / min(1-29) / max(1-30) / (<?php echo implode("|",$context) ?>) / (html|plain) / (zg|uni)
     </p>
     <h3>Example</h3>
     <p>
-        <a href="<?php echo $url; ?>para4/min2/max6/plain/zg" target="_blank"><?php echo $url; ?>para4/min2/max6/plain/zg</a>
+        <a href="<?php echo $url; ?>para4/min2/max6/sport/plain/zg" target="_blank"><?php echo $url; ?>para4/min2/sport/max6/plain/zg</a>
     </p>
     <p>
         Parameter order can be changed.
     </p>
     <p>
-    <a href="<?php echo $url; ?>min2/para4/max6/uni/html" target="_blank"><?php echo $url; ?>min2/para4/max6/uni/html</a>
+    <a href="<?php echo $url; ?>min2/para4/max6/uni/html/sport" target="_blank"><?php echo $url; ?>min2/para4/max6/uni/html/sport</a>
     </p>
 </main>
 <footer>
