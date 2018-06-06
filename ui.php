@@ -1,8 +1,8 @@
 <?php
 
-require "config.php";
+require_once "config.php";
 
-$url = BASE_URL.$conf["folder"]."/api/";
+$url = BASE_URL.FOLDER."/api/";
 
 ?>
 
@@ -13,10 +13,10 @@ $url = BASE_URL.$conf["folder"]."/api/";
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Myanmar Lorem Ipsum dummy text generator. This can generate dummy text in Burmese language. Both Unicode and Zawgyi are supported. "/>
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="<?php echo $conf["title"]; ?>" />
+    <meta property="og:title" content="<?php echo TITLE; ?>" />
     <meta property="og:url" content="<?php echo BASE_URL; ?>/" />
     <meta property="og:site_name" content="Myanmar Lorem Ipsum Dummy Text Generator" />
-    <title><?php echo $conf["title"]; ?></title>
+    <title><?php echo TITLE; ?></title>
     <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
     <script src="vendors/bootstrap/jquery.min.js"></script>
     <script src="vendors/bootstrap/bootstrap.min.js"></script>
@@ -72,7 +72,7 @@ function newText()
     var maxLines    = document.getElementById("maxLines").value;
     var encoding    = document.getElementById("encoding").value;
     var htmlCode    = document.getElementById("htmlCode").value;
-    var url         = "<?php echo BASE_URL.$conf["folder"] ?>/api/para"+paragraph+"/min"+minLines+"/max"+maxLines+"/"+encoding+"/"+htmlCode+"/"+context;
+    var url         = "<?php echo BASE_URL.FOLDER ?>/api/para"+paragraph+"/min"+minLines+"/max"+maxLines+"/"+encoding+"/"+htmlCode+"/"+context;
 
     var text =  httpGet(url);
     document.getElementById("dummyText").value = text.trim();

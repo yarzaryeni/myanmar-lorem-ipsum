@@ -4,9 +4,9 @@
  * Date: 1/6/2018
  * Time: 11:54 PM
  */
-require "config.php";
+require_once "config.php";
 
-if(!isset($_GET['context'])) $context = $conf["default_context"]; else $context = trim(strtolower($_GET['context']));
+if(!isset($_GET['context'])) $context = DEFAULT_CONTEXT; else $context = trim(strtolower($_GET['context']));
 
 define("CONTEXT", "./".$context."/");
 require "functions.php";

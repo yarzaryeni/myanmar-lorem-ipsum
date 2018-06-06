@@ -6,7 +6,7 @@
  */
 define("BR","<br>");
 define("HR","<hr>");
-require "config.php";
+require_once "config.php";
 
 if($_SERVER['HTTP_HOST'] != preg_replace("/(http:)[\/]+/","",BASE_URL))
 {
@@ -14,7 +14,7 @@ if($_SERVER['HTTP_HOST'] != preg_replace("/(http:)[\/]+/","",BASE_URL))
 }
 
 $base_url = BASE_URL;
-$folder = $conf["folder"];
+$folder = FOLDER;
 
 $uri = $_SERVER['REQUEST_URI'];
 $uri = str_replace_first($folder."/","", $uri);

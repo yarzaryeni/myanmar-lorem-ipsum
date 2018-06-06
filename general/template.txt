@@ -1,1 +1,3 @@
 {time_3} {adj_2} {sub} {obj} {adv_2} {verb}{end}
+{time_3} {adj_2} {sub} {obj} {adv_2} {verb}{end}
+{time_3} {adj_2} {sub} {obj} {adv_2} {verb}{and} {sub_3} {obj} {adv_2} {verb} {end}
