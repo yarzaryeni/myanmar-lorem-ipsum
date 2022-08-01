@@ -31,7 +31,7 @@ if(!isset($_GET['enc']))
     $encoding = $_GET['enc'];
 }
 
-if($encoding == "zg") $font = "Zawgyi-one, Zawgyi1"; else $font = 'Myanmar3, "Myanmar Text" , Myanmar2';
+if($encoding == "zg") $font = ZAWGYI_FAMILY; else $font = UNICODE_FAMILY;
 if(!isset($_GET['html'])) $html = "html"; else $html = strtolower($_GET['html']);
 
 
